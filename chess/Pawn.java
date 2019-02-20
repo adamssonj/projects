@@ -10,7 +10,7 @@ public class Pawn extends Piece {
         if (!destination.validCoordinate()) {
             return false;
         }
-        if (destination.equal(startpos)) {
+        if (destination.equals(startpos)) {
             return false;
         }
 

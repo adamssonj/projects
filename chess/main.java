@@ -17,7 +17,7 @@ public class main {
                 runGame = !runGame;
                 break;
             }
-            game.move(command);
+          game.move(command);
         }
     }
 

@@ -55,9 +55,22 @@ public class GameManager {
         Coordinate[] movePositions = coordParser(move); //movePositions[0] = startpos, movePosition[1] = endpos.
         Piece piece = board.getSquare(movePositions[0]).getPiece();
         Move tryMove = new Move(movePositions[0], movePositions[1], piece);
+        boolean skipCheck = false;
 
         if (!tryMove.checkMove(movePositions, currentPlayer, board)) {
             return false;
+        }
+        if(tryMove.isInCheck(currentPlayer,board,currentPlayerthreats())){
+          if(tryMove.isInCheckAfterMove(currentPlayer,board)){
+            return false;
+          }
+          else{ // Then they got out of the check
+              skipCheck = true;
+          }
+        }
+        if(tryMove.isInCheckAfterMove(currentPlayer,board) && !skipCheck)
+        {
+          return false;
         }
         //Check for capture, enpassant, castle.
         if (piece instanceof Pawn) {
@@ -109,10 +122,18 @@ public class GameManager {
             }
         }
     }
+    private Set<Coordinate> currentPlayerthreats(){
+      if(currentPlayer.equal(white)){
+        return blackThreats;
+      }
+      return whiteThreats;
+    }
 
     /**
      * Executes the en passant move.
      *
+     * @param coords The startposition and
+     * @param piece  [description]
      */
     private void doEnpassant(Move moveMade) {
         Move lastMove = movesMade.get(movesMade.size() - 1);
@@ -123,11 +144,7 @@ public class GameManager {
         switchTurn();
         updateAttackedSquares();
     }
-/**
- * Executes the castling
- * @param coords  Coordinates
- * @param tryMove [description]
- */
+
     private void doCastle(Coordinate[] coords, Move tryMove) {
         Coordinate rookStart = tryMove.assignRook();
         Coordinate rookEnd = null;

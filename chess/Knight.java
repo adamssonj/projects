@@ -11,7 +11,7 @@ public class Knight extends Piece {
         if (!destination.validCoordinate()) {
             return false;
         }
-        if (destination.equal(startpos)) {
+        if (destination.equals(startpos)) {
             return false;
         }
         int diffX = Math.abs(startpos.getX() - destination.getX());

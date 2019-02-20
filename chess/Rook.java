@@ -12,7 +12,7 @@ public class Rook extends Piece {
         if (!destination.validCoordinate()) {
             return false;
         }
-        if (destination.equal(startpos)) {
+        if (destination.equals(startpos)) {
             return false;
         }
         if (startpos.xEqual(destination) || startpos.yEqual(destination)) {
@@ -46,11 +46,12 @@ public class Rook extends Piece {
         return true;
     }
 
-    public List<Coordinate> attackedSquares(Coordinate position, Board board) {
+    public List<Coordinate> attackedSquares(Coordinate pos, Board board) {
         List<Coordinate> squares = new ArrayList<>();
-        int x = position.getX(), y = position.getY();
+        int x = pos.getX(), y = pos.getY();
+
         for (int i = x; i < 8; i++) {
-            if (board.getSquare(i, y).isEmpty()) {
+            if (board.getSquare(i, y).isEmpty() || (pos.getX() == i)) {
                 squares.add(new Coordinate(i, y));
             } else {
                 squares.add(new Coordinate(i, y));
@@ -58,7 +59,7 @@ public class Rook extends Piece {
             }
         }
         for (int i = x; i >= 0; i--) {
-            if (board.getSquare(i, y).isEmpty()) {
+            if (board.getSquare(i, y).isEmpty() || (pos.getX() == i)) {
                 squares.add(new Coordinate(i, y));
             } else {
                 squares.add(new Coordinate(i, y));
@@ -66,7 +67,7 @@ public class Rook extends Piece {
             }
         }
         for (int i = y; i < 8; i++) {
-            if (board.getSquare(x, i).isEmpty()) {
+            if (board.getSquare(x, i).isEmpty()|| (pos.getY() == i)) {
                 squares.add(new Coordinate(x, i));
             } else {
                 squares.add(new Coordinate(x, i));
@@ -74,13 +75,14 @@ public class Rook extends Piece {
             }
         }
         for (int i = y; i >= 0; i--) {
-            if (board.getSquare(x, i).isEmpty()) {
+            if (board.getSquare(x, i).isEmpty()|| (pos.getY() == i)) {
                 squares.add(new Coordinate(x, i));
             } else {
                 squares.add(new Coordinate(x, i));
                 break;
             }
         }
+        squares.add(pos);
         return squares;
     }
 

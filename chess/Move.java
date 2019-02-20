@@ -218,6 +218,60 @@ public class Move {
         return rookCoordinate;
     }
 
+/**
+ * Check if the current player is in check or will be in check by the move he or she makes.
+ * @param  currentPlayer the player that tries to move
+ * @param  board         the current board
+ * @return               true if in check else false.
+ */
+    public boolean isInCheck(Player currentPlayer, Board board, Set<Coordinate> threatenedSquares){
+        Coordinate kingCoord = null;;
+        for(int i = 0; i < 8;i++){
+          for(int j = 0; j< 8; j++){
+            if(board.getSquare(i,j).getPiece() instanceof King && board.getSquare(i,j).getPiece().getPlayer().equal(currentPlayer)){
+              kingCoord = board.getSquare(i,j).getCoord();
+              break;
+            }
+          }
+        }
+        if(kingCoord == null){
+          return false;
+        }
+        if(threatenedSquares.contains(kingCoord)){
+          return true;
+        }
+        return false;
+    }
+    /**
+     * Checks if player is in check after making a move
+     * @param  coords            the coordinates of the move they wish to make
+     * @param  currentPlayer
+     * @param  board             the current board
+     * @param  threatenedSquares A set of squares that the opposite player are threatening.
+     * @return                   true if in check after move else false.
+     */
+    public boolean isInCheckAfterMove(Player currentPlayer, Board board){
+      Board dummyBoard = new Board(board);
+      dummyBoard.move(startpos,destination);
+      if(isInCheck(currentPlayer, dummyBoard,updateThreats(currentPlayer, dummyBoard))){
+        return true;
+      }
+      return false;
+    }
+    private Set<Coordinate> updateThreats(Player currentPlayer, Board b){
+          Set<Coordinate> ret = new HashSet<>();
+          for (int i = 0; i < 8; i++) {
+              for (int j = 0; j < 8; j++) {
+                  Piece p = b.getSquare(i, j).getPiece();
+                  if (p != null) {
+                      if (!p.getPlayer().equal(currentPlayer)) {
+                        ret.addAll(p.attackedSquares(new Coordinate(i, j), b));
+                      }
+                  }
+              }
+          }
+          return ret;
+      }
     public boolean badKing() {
         int diffx = Math.abs(startpos.getX() - destination.getX());
         return diffx != 1 ? true : false;

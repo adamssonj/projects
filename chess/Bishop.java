@@ -12,7 +12,7 @@ public class Bishop extends Piece {
         if (!destination.validCoordinate()) {
             return false;
         }
-        if (destination.equal(startpos)) {
+        if (destination.equals(startpos)) {
             return false;
         }
         if (Math.abs((startpos.getX() - destination.getX())) == (Math.abs(startpos.getY() - destination.getY()))) {
@@ -60,16 +60,22 @@ public class Bishop extends Piece {
         int x = pos.getX(), y = pos.getY();
         int steps = Math.abs(x - 8);
 
-        for (int i = 0; i < steps; i++) {
-            if (board.getSquare(x + i, y + i).isEmpty()) {
+        for (int i = 0; i < 8; i++) {
+          if(!pos.validArrayXY(x+i,y+i)){
+            break;
+          }
+          if (board.getSquare(x + i, y + i).isEmpty() || (pos.getX() == (x+i) && pos.getY() == (y+i))) {
                 squares.add(new Coordinate(x + i, y + i));
             } else {
                 squares.add(new Coordinate(x + i, y + i));
                 break;
             }
         }
-        for (int i = 0; i < steps; i++) {
-            if (board.getSquare(x + i, y - i).isEmpty()) {
+        for (int i = 0; i < 8; i++) {
+          if(!pos.validArrayXY(x+i,y-i)){
+            break;
+          }
+            if (board.getSquare(x + i, y - i).isEmpty() || (pos.getX() == (x+i) && pos.getY() == (y-i))) {
                 squares.add(new Coordinate(x + i, y - i));
             } else {
                 squares.add(new Coordinate(x + i, y - i));
@@ -77,22 +83,29 @@ public class Bishop extends Piece {
             }
         }
         steps = Math.abs(8 - x);
-        for (int i = 0; i < steps; i++) {
-            if (board.getSquare(x - i, y - i).isEmpty()) {
+        for (int i = 0; i < 8; i++) {
+          if(!pos.validArrayXY(x-i,y-i)){
+            break;
+          }
+            if (board.getSquare(x - i, y - i).isEmpty() || (pos.getX() == (x-i) && pos.getY() == (y-i))) {
                 squares.add(new Coordinate(x - i, y - i));
             } else {
                 squares.add(new Coordinate(x - i, y - i));
                 break;
             }
         }
-        for (int i = 0; i < steps; i++) {
-            if (board.getSquare(x - i, y + i).isEmpty()) {
+        for (int i = 0; i < 8; i++) {
+          if(!pos.validArrayXY(x-i,y+i)){
+            break;
+          }
+            if (board.getSquare(x - i, y + i).isEmpty() || (pos.getX() == (x-i) && pos.getY() == (y+i))) {
                 squares.add(new Coordinate(x - i, y + i));
             } else {
                 squares.add(new Coordinate(x - i, y + i));
                 break;
             }
         }
+        squares.add(pos);
         return squares;
     }
 

@@ -38,14 +38,23 @@ public class Coordinate {
         return (coord.getX() >= 0 && getX() <= 8 &&
                 coord.getY() >= 0 && getY() <= 8);
     }
-
+    public boolean validArrayXY(int x, int y){
+      return(x >= 0 && x <=7 &&
+             y >= 0 && y <= 7);
+    }
     public boolean validCoordinate() {
         return (xpos >= 0 && xpos <= 8 &&
                 ypos >= 0 && ypos <= 8);
     }
+    @Override
+    public int hashCode(){
+        return 0;
+    }
 
-    public boolean equal(Coordinate coord) {
-        return (this.getX() == coord.getX() && this.getY() == coord.getY());
+    @Override
+    public boolean equals(Object o) {
+        Coordinate other = (Coordinate) o;
+        return (this.getX() == other.getX() && this.getY() == other.getY());
     }
 
     public boolean xEqual(Coordinate coord) {

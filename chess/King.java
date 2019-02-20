@@ -11,7 +11,7 @@ public class King extends Piece {
         if (!destination.validCoordinate()) {
             return false;
         }
-        if (startpos.equal(destination)) {
+        if (startpos.equals(destination)) {
             return false;
         }
         int diffX = Math.abs(startpos.getX() - destination.getX());

@@ -14,6 +14,23 @@ public class Board {
         setWhitePieces();
         setBlackPieces();
     }
+    public Board(Board b){
+    this.squares=(deepCopySquareMatrix(b.getsquares()));
+    }
+/**
+ * Returns a copied version of the Square 2d array sent as input
+ * @param  input A 2d array of squares
+ * @return       copy of said 2d array.
+ */
+    public Square[][] deepCopySquareMatrix(Square[][] input) {
+    if (input == null)
+        return null;
+    Square[][] result = new Square[input.length][];
+    for (int r = 0; r < input.length; r++) {
+        result[r] = input[r].clone();
+    }
+    return result;
+  }
 
     /**
      * Creates 64 empty squares with coordinates (0,0),(0,1).... (0,7);
@@ -25,7 +42,9 @@ public class Board {
             }
         }
     }
-
+    public Square[][] getsquares(){
+      return squares;
+    }
     public Square getSquare(int x, int y) {
         return squares[x][y];
     }
@@ -71,7 +90,6 @@ public class Board {
         squares[3][7].setPiece(new Queen(black));
         squares[4][7].setPiece(new King(black));
     }
-
     public boolean sameTeam(Player p, Coordinate finalpos) {
         return squares[finalpos.getX()][finalpos.getY()].getPiece().getPlayer().equal(p);
     }
