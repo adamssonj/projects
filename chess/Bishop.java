@@ -1,10 +1,21 @@
+import javax.imageio.ImageIO;
 import java.util.List;
 import java.util.ArrayList;
-
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 public class Bishop extends Piece {
+
+
+  private BufferedImage whiteImg;
+  private BufferedImage blackImg;
 
     public Bishop(Player player) {
         super("Bishop", player);
+        try{
+        whiteImg = ImageIO.read(new File("bilder/whiteBishop.png"));
+        blackImg = ImageIO.read(new File("bilder/blackBishop.png"));
+      }catch(IOException e){}
     }
 
     public boolean isMoveValid(Coordinate startpos, Coordinate destination, Board board) {
@@ -109,7 +120,7 @@ public class Bishop extends Piece {
         return squares;
     }
 
-    public char display() {
-        return getPlayer().retPlayerTeam().equals("white") ? '♗' : '♝';
+    public BufferedImage display() {
+        return getPlayer().retPlayerTeam().equals("white") ? whiteImg : blackImg;
     }
 }

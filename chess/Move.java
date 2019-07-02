@@ -251,11 +251,17 @@ public class Move {
      * @return                   true if in check after move else false.
      */
     public boolean isInCheckAfterMove(Player currentPlayer, Board board){
-      Board dummyBoard = new Board(board);
-      dummyBoard.move(startpos,destination);
+        Board dummyBoard = new Board(board);
+        Square[][] squares = board.deepCopySquareMatrix(board.getsquares());
+        Move tryMove = new Move(startpos,destination,board.getSquare(startpos).getPiece());
+        if(tryMove.isCapture(board)) {
+            dummyBoard.nullSquare(destination);
+        }
+            dummyBoard.move(startpos,destination);
       if(isInCheck(currentPlayer, dummyBoard,updateThreats(currentPlayer, dummyBoard))){
         return true;
       }
+        board.setSquares(squares);
       return false;
     }
     private Set<Coordinate> updateThreats(Player currentPlayer, Board b){
@@ -263,6 +269,7 @@ public class Move {
           for (int i = 0; i < 8; i++) {
               for (int j = 0; j < 8; j++) {
                   Piece p = b.getSquare(i, j).getPiece();
+
                   if (p != null) {
                       if (!p.getPlayer().equal(currentPlayer)) {
                         ret.addAll(p.attackedSquares(new Coordinate(i, j), b));

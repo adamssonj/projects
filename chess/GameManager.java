@@ -1,9 +1,15 @@
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.*;
+import java.awt.*;
+import javax.swing.Timer;
+
 
 /**
  * This class ties everything together, keeps tracks of the game basically.
  */
-public class GameManager {
+public class GameManager extends JPanel implements ActionListener  {
 
     private Board board;
     private Player white;
@@ -13,8 +19,15 @@ public class GameManager {
     private Set<Coordinate> whiteThreats;
     private Set<Coordinate> blackThreats;
     private boolean enPassant;
+    private int DELAY = 100;
+    private Timer timer;
+    private MoveHelper mhelp;
 
-    public GameManager() {
+    public GameManager(int pWidth, int pHeight){
+        super();
+        setSize(pWidth,pHeight);
+
+    //----------------------------------
         white = new Player("white");
         black = new Player("black");
         board = new Board(white, black);
@@ -23,12 +36,33 @@ public class GameManager {
         whiteThreats = new HashSet<>();
         blackThreats = new HashSet<>();
         enPassant = false;
+        mhelp = new MoveHelper();
+        this.addMouseListener(new MListener(mhelp));
+        timer = new javax.swing.Timer(DELAY,this);
+        timer.start();
     }
 
+    public void actionPerformed(ActionEvent e){
+        if(mhelp.getMove().length() > 0){
+            move(mhelp.getMove());
+            mhelp.setMove("");
+            repaint();
+        }
+    }
+    public void paintComponent(Graphics g){
+      g.drawImage(board.draw(),0,0,this);
+      for(int i = 0; i<8;i++){
+        for(int j = 0; j <8;j++){
+            if(!board.getSquare(j,i).isEmpty()){
+          g.drawImage(board.getSquare(j,i).getPiece().display(),j*50,i*50,this);
+          }
+        }
+      }
+    }
+    //TODO: Det enda som är kvar är nog att kolla om man är i schackmatt.
     public Board getBoard() {
         return board;
     }
-
     private void switchTurn() {
         if (currentPlayer.equal(white)) {
             currentPlayer = black;
@@ -37,19 +71,6 @@ public class GameManager {
         }
     }
 
-    public void displayBoard() {
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-                if (!board.getSquare(j, i).isEmpty()) {
-                    System.out.print(board.getSquare(j, i).getPiece().display());
-                } else {
-                    System.out.print(' ');
-                }
-                System.out.print(' ');
-            }
-            System.out.println();
-        }
-    }
 
     public boolean move(String move) {
         Coordinate[] movePositions = coordParser(move); //movePositions[0] = startpos, movePosition[1] = endpos.

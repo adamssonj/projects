@@ -1,11 +1,20 @@
+import javax.imageio.ImageIO;
 import java.util.List;
 import java.util.ArrayList;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public class Queen extends Piece {
+  private BufferedImage whiteImg;
+  private BufferedImage blackImg;
     public Queen(Player player) {
         super("Queen", player);
+        try{
+        whiteImg = ImageIO.read(new File("bilder/whiteQueen.png"));
+        blackImg = ImageIO.read(new File("bilder/blackQueen.png"));
+      }catch(IOException e){}
     }
-
 
     public boolean isMoveValid(Coordinate startpos, Coordinate destination, Board board) {
         if (!destination.validCoordinate()) {
@@ -31,7 +40,7 @@ public class Queen extends Piece {
         return squares;
     }
 
-    public char display() {
-        return getPlayer().retPlayerTeam().equals("white") ? '♕' : '♛';
+    public BufferedImage display() {
+        return getPlayer().retPlayerTeam().equals("white") ? whiteImg : blackImg;
     }
 }

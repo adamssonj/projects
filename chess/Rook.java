@@ -1,9 +1,19 @@
+import javax.imageio.ImageIO;
 import java.util.List;
 import java.util.ArrayList;
-
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 public class Rook extends Piece {
+
+  private BufferedImage whiteImg;
+  private BufferedImage blackImg;
     public Rook(Player p) {
         super("Rook", p);
+        try{
+        whiteImg = ImageIO.read(new File("bilder/whiteRook.png"));
+        blackImg = ImageIO.read(new File("bilder/blackRook.png"));
+      }catch(IOException e){}
     }
 
 
@@ -86,7 +96,7 @@ public class Rook extends Piece {
         return squares;
     }
 
-    public char display() {
-        return getPlayer().retPlayerTeam().equals("white") ? '♖' : '♜';
+    public BufferedImage display() {
+      return getPlayer().retPlayerTeam().equals("white") ? whiteImg : blackImg;
     }
 }

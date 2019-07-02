@@ -1,3 +1,8 @@
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 /**
  * This class represents a chess board.
  */
@@ -6,6 +11,8 @@ public class Board {
     private Square[][] squares = new Square[8][8];
     private Player white;
     private Player black;
+    private BufferedImage boardImg;
+    private int imgSide = 400;
 
     public Board(Player white, Player black) {
         this.white = white;
@@ -13,6 +20,7 @@ public class Board {
         arrangeBoard();
         setWhitePieces();
         setBlackPieces();
+        initImage();
     }
     public Board(Board b){
     this.squares=(deepCopySquareMatrix(b.getsquares()));
@@ -31,6 +39,20 @@ public class Board {
     }
     return result;
   }
+  public void setSquares(Square[][] inp){
+        squares = deepCopySquareMatrix((inp));
+  }
+  private void initImage(){
+    try{
+    boardImg = ImageIO.read(new File("bilder/chessBoard.png"));
+    }catch(IOException e){}
+
+    BufferedImage resizedImage = new BufferedImage(imgSide,imgSide, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g = resizedImage.createGraphics();
+    g.drawImage(boardImg,0,0,imgSide,imgSide,null);
+    g.dispose();
+    boardImg = resizedImage;
+  }
 
     /**
      * Creates 64 empty squares with coordinates (0,0),(0,1).... (0,7);
@@ -47,6 +69,9 @@ public class Board {
     }
     public Square getSquare(int x, int y) {
         return squares[x][y];
+    }
+    public void nullSquare(Coordinate pos){
+        squares[pos.getX()][pos.getY()] = new Square(pos);
     }
 
     public Square getSquare(Coordinate coord) {
@@ -103,5 +128,8 @@ public class Board {
         temp = squares[start.getX()][start.getY()];
         squares[start.getX()][start.getY()] = squares[end.getX()][end.getY()];
         squares[end.getX()][end.getY()] = temp;
+    }
+    public BufferedImage draw(){
+      return boardImg;
     }
 }

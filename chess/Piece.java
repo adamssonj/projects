@@ -1,3 +1,4 @@
+import java.awt.image.BufferedImage;
 import java.lang.Math;
 import java.util.List;
 
@@ -35,7 +36,7 @@ public abstract class Piece {
  * As of now it returns the unicode character of the piece.
  * @return a unicode character, e.g. '♖'
  */
-    protected abstract char display();
+    protected abstract BufferedImage display();
 
     /**
      * Returns a List of coordinates that the specific piece is threatening.
