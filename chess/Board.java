@@ -112,8 +112,8 @@ public class Board {
         squares[2][7].setPiece(new Bishop(black));
         squares[5][7].setPiece(new Bishop(black));
 
-        squares[3][7].setPiece(new Queen(black));
-        squares[4][7].setPiece(new King(black));
+        squares[4][7].setPiece(new Queen(black));
+        squares[3][7].setPiece(new King(black));
     }
     public boolean sameTeam(Player p, Coordinate finalpos) {
         return squares[finalpos.getX()][finalpos.getY()].getPiece().getPlayer().equal(p);
