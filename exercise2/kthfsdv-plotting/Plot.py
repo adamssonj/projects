@@ -32,37 +32,21 @@ class Plot():
         y,ymax,ymin = self.funct(x)
         return x.tolist(),y,ymax,ymin
 
-#    def updatePoints(self,xStart,xLim): #We only want to update the points that we do not have.A bit tricky when I am using two slides, something to fix
-#        if xStart < self.lastXmin:
-#            from_ = self.lastXmin
-#            to = xStart
-#        if xLim > self.lastXmax:
-#            from_ = self.lastXmax
-#            to = xLim
-#        x = np.arange(from_,to,(to-from_)/1000)
-#        y,ymax,ymin = self.funct(x)
-#        if ymax < self.yMax:
-#            ymax=self.yMax
-#        if ymin >self.yMin:
-#            ymin = self.yMin
-#        self.lastXmin = xStart
-#        self.lastXmax = xLim
-#        return x.tolist(),y,ymax,ymin
+#TODO: Change such that only points not already calculated are added to the list instead of recalculating every point when using the sliders!
+#TODO: Create sepe
 
     def updateAxis(self,up, scale =0):
         if scale:
             scale = int(scale)
             scaleConst = 1
-            xmin, xmax, ymin, ymax = plt.axis() #Stored as numpy float64
+            xmin, xmax, ymin, ymax = plt.axis()
             if self.scale <= scale:
                 if up:
                     xmax = xmax + scale*scaleConst
                 else:
                     xmin = xmin - scale*scaleConst
 
-            #self.axis.set_xlim(xmin=xmin, xmax= xmax)
             self.xPoints, self.yPoints,self.yMax, self.yMin = self.setPoints(xmin,xmax)
-            #self.axis.set_ylim(ymin= self.yMin, ymax= self.yMax)
             self.axis.set(xlim=(xmin,xmax), ylim= (self.yMin,self.yMax))
             self.axis.autoscale()
             self.scale = scale
@@ -81,7 +65,7 @@ class Plot():
         self.opt.resetSlides()
 
     def saveData(self,name):
-        dataName = name.get()+'.csv'
+        dataName = 'Data/'+name.get()+'.csv'
         with open(dataName,'w',newline='') as f:
             writer = csv.writer(f)
             writer.writerow(['x', 'y']) #Header
@@ -89,7 +73,8 @@ class Plot():
                 writer.writerow([self.xPoints[i],self.yPoints[i]])
 
     def savePlot(self,plotName):
-        plt.savefig(fname=plotName.get())
+        name = 'Data/'+plotName.get()
+        plt.savefig(fname=name)
     def plotShow(self):
         plt.show()
         self.master.mainloop()
