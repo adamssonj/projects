@@ -25,11 +25,13 @@ We write
 * **u**(t) = **u0** + **Δu**(t)
 * **x**(t) = **x0** + **Δx**(t)
 
+If we take the derivative of **x**(t) we get:
+* **Δx**(t)' = f(**x0** + **Δx**(t),**x0** + **Δx**(t))
 
-Then
+
+Then we Taylor expand the RHS and get:
 * **Δx**(t)' = (df/dx)(**x0**,**u0**)* **Δx**(t) + (df/du)(**x0**,**u0**)* **Δu**(t)
   * Since x0' = 0, **x**' = f(x0 + Δx, u0+Δu) and f(**x0**,**u0**) = 0
-  * So, we Taylor expanded 
 
 Where
  * (df/dx)(**x0**,**u0**)* **Δx**(t) = [0,0,-v*sinθ;0,0,v*cosθ;0,0,0];
