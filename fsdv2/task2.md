@@ -28,7 +28,8 @@ We write
 
 Then
 * **Δx**(t)' = (df/dx)(**x0**,**u0**)* **Δx**(t) + (df/du)(**x0**,**u0**)* **Δu**(t)
-  * Since x0' = 0 and **x**' = f(x0 + Δx, u0+Δu)
+  * Since x0' = 0, **x**' = f(x0 + Δx, u0+Δu) and f(**x0**,**u0**) = 0
+  * So, we Taylor expanded 
 
 Where
  * (df/dx)(**x0**,**u0**)* **Δx**(t) = [0,0,-v*sinθ;0,0,v*cosθ;0,0,0];
