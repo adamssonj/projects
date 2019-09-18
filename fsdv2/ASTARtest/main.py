@@ -1,4 +1,3 @@
-
 import pygame
 import math
 from Square import square
@@ -135,7 +134,7 @@ def Astar(pos):
     open_list = []
     closed_list = []
     start = grid[pos[0]][pos[1]]
-    
+
     cone_above, cone_below = findCones(start)
     cones_visited.append(cone_above)
     cones_visited.append(cone_below)
@@ -166,19 +165,18 @@ def Astar(pos):
         #Find neighbouring nodes, not walls
         neighbours = current.getNeighbours(grid)
         for neighbour in neighbours:
-            #Check all neighbours that are not in the closed list
-            #if neighbour not in closed_list:
-            tmp = current.g + heuristic(neighbour,current)
-
-            if neighbour in closed_list:
-                if tmp >= neighbour.g:
-                    continue
-            if neighbour not in open_list or tmp < neighbour.g:
-                neighbour.g = tmp
-                neighbour.h = heuristic(neighbour,end)
+        #Check all neighbours that are not in the closed list
+        #if neighbour not in closed_list:
+            if neighbour not in closed_list and not neighbour.wall:
+                temp_g = current.g + heuristic(neighbour,current) ## Need to check here if it's a diagonal neighbour or not.
+                if neighbour not in open_list:
+                    open_list.append(neighbour)
+                elif temp_g >= neighbour.g:
+                     continue
+                neighbour.g = temp_g
+                neighbour.h = heuristic(neighbour, end)
                 neighbour.f = neighbour.g + neighbour.h
                 neighbour.previous = current
-                open_list.append(neighbour)
         prev = current
 
     return []
